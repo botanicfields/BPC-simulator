@@ -21,6 +21,7 @@ struct timespec ts;  // time spec: second, nano-second
 Ticker tk;
 const int ticker_interval_ms(100);
 const int marker(-1);  // marker code TcoValue() returns
+int tco000;
 
 // PWM for TCO signal
 const uint8_t  ledc_pin_atom(22);   // GPIO22 for ATOM Lite/Matrix
@@ -65,43 +66,44 @@ void TcoGen()
 
 void Tco000ms()
 {
-  if (TcoValue() == marker) {
-    TcOff();
+  tco000 = TcoValue();
+  if (tco000 == marker) {
+    TcOn();
     Serial.print(&td, "\n%A %B %d %Y %H:%M:%S\n");
   } 
   else {
-    TcOn();
+    TcOff();
   }
 }
 
 void Tco100ms()
 {
-  if (TcoValue() == 0) {
-    TcOff();
+  if (tco000 == 0) {
+    TcOn();
     Serial.print("0");
   }
 }
 
 void Tco200ms()
 {
-  if (TcoValue() == 1) {
-    TcOff();
+  if (tco000 == 1) {
+    TcOn();
     Serial.print("1");
   }
 }
 
 void Tco300ms()
 {
-  if (TcoValue() == 2) {
-    TcOff();
+  if (tco000 == 2) {
+    TcOn();
     Serial.print("2");
   }
 }
 
 void Tco400ms()
 {
-  if (TcoValue() == 3) {
-    TcOff();
+  if (tco000 == 3) {
+    TcOn();
     Serial.print("3");
   }
 }
@@ -135,7 +137,7 @@ int TcoValue()
   if (td.tm_wday == 0) wday9 = 3;
 
   int ampm_p10 = td.tm_hour / 12 * 2        // am pm = 0:AM, 1:PM
-                 + (second1 + hour3 + hour4 + minute5 + minute6 + minute7 + wday8 + wday9) % 2;
+                 + (bits(second1) + bits(hour3) + bits(hour4) + bits(minute5) + bits(minute6) + bits(minute7) + bits(wday8) + bits(wday9)) % 2;
   
   int mday11 = td.tm_mday / 16;             // day of month = 1..31
   int mday12 = td.tm_mday % 16 / 4;
@@ -149,7 +151,7 @@ int TcoValue()
   int year18 = td.tm_year % 100 % 4;
 
   int year_p19 = td.tm_year % 100 / 64 * 2
-                 + (mday11 + mday12 + mday13 + month14 + month15 + year16 + year17 + year18) % 2;
+                 + (bits(mday11) + bits(mday12) + bits(mday13) + bits(month14) + bits(month15) + bits(year16) + bits(year17) + bits(year18)) % 2;
 
   int tco;
   switch (td.tm_sec % 20) {
@@ -178,6 +180,13 @@ int TcoValue()
     default: tco = 3;         break;
   }
   return tco;
+}
+
+int bits(int a)
+{
+  if(a == 0) return 0;
+  if(a == 3) return 2;
+  return 1;  // a == 1, 2
 }
 
 //..:....1....:....2....:....3....:....4....:....5....:....6....:....7..
