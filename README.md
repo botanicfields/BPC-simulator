@@ -1,6 +1,14 @@
 # BPC-simulator
 Simulate time signal from BPC in China on M5ATOM and ATOM S3
 
-I wrote the code according to the specifications found in the Wiki.
+Reference:  
+https://en.wikipedia.org/wiki/BPC_(time_signal)
 
-I don't have a watch to confirm its operation, so I haven't tested it.
+Checked with CASIO LWA-M141 (5133)  
+https://www.casio.com/intl/support/watches/manual/?module=5133  
+https://www.casio.com/jp/support/watches/manual/?module=5133  
+
+<img src="image\IMG_9505.JPEG" width=300>  
+
+PCB:  
+https://github.com/botanicfields/BF-018A  
