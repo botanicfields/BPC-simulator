@@ -15,6 +15,9 @@ Added following features to bpc.ino:
 - Statistics
 - Optional RTC
 
+## Information  
+https://protopedia.net/prototype/5433
+
 ## Operation check
 checked with CASIO watch LWA-M141 (5133)  
 <img src="image\IMG_9505.JPEG" width=300>  
